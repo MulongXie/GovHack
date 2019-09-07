@@ -11,16 +11,19 @@
 
 <div class="nav">
     <ul>
-        <li><a href="http://www.4399.com"><span>Population</span></a></li>
-        <li><a href="http://www.4399.com"><span>Employment</span></a></li>
-        <li><a href="http://www.4399.com"><span>Resource</span></a></li>
-        <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
+        <li><a onclick="categorize('Population')"><span>Population</span></a></li>
+        <li><a onclick="categorize('Employment')"><span>Employment</span></a></li>
+        <li><a onclick="categorize('Resource')"><span>Resource</span></a></li>
+        <li><a onclick="categorize('Transportation')"><span>Transportation</span></a></li>
     </ul>
 </div>
 
 <div class="content">
     <div class="con_left">
-        <div id="plot" >
+        <div class="title">
+            <h3 id="graph_title">Population</h3>
+        </div>
+        <div id="plot">
         </div>
         <div class="drag_bar">
             <div class="year">
@@ -110,10 +113,17 @@
         Plotly.newPlot(board, plot_data, plot_layout);
     }
 
+    function categorize(title){
+        let g_title = document.getElementById('graph_title');
+        g_title.innerText = title;
+    }
+
     window.onload = function () {
         let year = document.getElementById('drag');
         query(year.min.toString(), year.value.toString(), function (data) {
-            plot(data)
+            data = JSON.parse(data);
+            plot(data);
+            drawCircle(data);
         });
     };
 
