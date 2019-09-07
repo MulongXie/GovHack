@@ -193,26 +193,33 @@ function addCircle(loc, map, population) {
     circles.push(circle);
 }
 
-function drawCircle(data) {
+function drawCircle(data, flag) {
+    console.log(data[0]);
     clear('circle');
-    var population = {'suburb':[], 'population':[]};
-    for(let i=0; i < data.length; i++){
-        var existing = false;
-        for(let j=0; j < population.suburb.length; j++){
-            if (data[i].Suburb == population.suburb[j]) {
-                population.population[j] += data[i].Population;
-                existing = true;
-                break;
+
+    if (flag == 'population'){
+        var population = {'suburb':[], 'population':[]};
+        for(let i=0; i < data.length; i++){
+            var existing = false;
+            for(let j=0; j < population.suburb.length; j++){
+                if (data[i].Suburb == population.suburb[j]) {
+                    population.population[j] += data[i].Population;
+                    existing = true;
+                    break;
+                }
+            }
+
+            if(!existing){
+                population.suburb.push(data[i].Suburb);
+                population.population.push(0);
             }
         }
 
-        if(!existing){
-            population.suburb.push(data[i].Suburb);
-            population.population.push(0);
+        for(var i=0; i < population.suburb.length; i++){
+            addCircle(population.suburb[i], globelMap, population.population[i].toString());
         }
     }
 
-    for(var i=0; i < population.suburb.length; i++){
-        addCircle(population.suburb[i], globelMap, population.population[i].toString());
+    else if (flag == 'crash'){
     }
 }
