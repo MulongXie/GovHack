@@ -16,6 +16,7 @@ def population():
     start = year['start']
     end = year['end']
     result = search(int(start),int(end))
+    print(result)
 
     return result
 
