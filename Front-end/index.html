@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+</head>
+<body>
+
+    <div class="nav">
+    </div>
+
+    <div class="content">
+        <div class="con_left">
+            <div class="plot">
+
+            </div>
+            <div class="drag_bar">
+                <div class="year">
+                    <p id="current">2000</p>
+                    <input id="drag" style="width: 100%;" type="range" min="2000" max="2050" value="0" oninput="change()">
+                    <p id="start">2000</p>
+                    <p id="end">2050</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="con_right">
+            <div class="map">
+                <iframe id="g_map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13029.082225015434!2d149.1069130697754!3d-35.27439890000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1567827388741!5m2!1sen!2sau" frameborder="0" height="100%" width="100%" style="border:0;" allowfullscreen=""></iframe>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function change() {
+            let year = document.getElementById('drag');
+            let now = document.getElementById('current');
+
+            now.innerHTML = year.value;
+            now.style.left = '160px;';
+        }
+    </script>
+
+</body>
+</html>
