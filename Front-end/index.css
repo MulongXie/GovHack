@@ -41,6 +41,7 @@ body, html, ul{
     width: 69%;
     height: 450px;
     border: black solid 2px;
+    border-left: none;
     float: left;
 }
 .map{

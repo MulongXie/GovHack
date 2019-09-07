@@ -23,10 +23,10 @@
             </div>
             <div class="drag_bar">
                 <div class="year">
-                    <p id="current">2000</p>
-                    <input id="drag" style="width: 100%;" type="range" min="2000" max="2050" value="0" oninput="change()">
-                    <p id="start">2000</p>
-                    <p id="end">2050</p>
+                    <p id="current">2015</p>
+                    <input id="drag" style="width: 100%;" type="range" min="2015" max="2020" value="2015" oninput="change()">
+                    <p id="start">2015</p>
+                    <p id="end">2020</p>
                 </div>
             </div>
         </div>
@@ -52,36 +52,80 @@
                     }
                 }
             ));
-
             xhr.onload = function() {
                 var data = this.responseText;
                 sendback(data)
-            }
-
+            };
         }
 
         function change() {
             let year = document.getElementById('drag');
             let now = document.getElementById('current');
 
-
             query(year.min.toString(), year.value.toString(), function (data) {
-                console.log(data)
+                plot(data)
             });
             now.innerHTML = year.value;
-            now.style.left = '160px;';
         }
 
-        function plot() {
+        function plot(data) {
+            // console.log(data);
             let board = document.getElementById('plot');
-            Plotly.plot(board,
-                [{x: [1, 2, 3, 4, 5],
-                  y: [1, 2, 4, 8, 16] }],
-                {margin: { t: 0 } } );
+
+            data = JSON.parse(data);
+            // console.log();
+
+            var population = {'year':[], 'population':[]};
+            for(let i=0; i < data.length; i++){
+                console.log(data[i]);
+
+                var existing = false;
+                for(let y=0; y < population.year.length; y++){
+                    if(data[i].Year == population.year[y]){
+                        population.population[y] += data[i].Population;
+                        existing = true;
+                        break;
+                    }
+                }
+
+                if(!existing){
+                    population.year.push(data[i].Year);
+                    population.population.push(0);
+                }
+            }
+
+            console.log(population);
+
+            var plot_data = [{x: population.year, y: population.population}];
+            var plot_layout = {
+                width: 360,
+                height: 360,
+                title: "Population in Australian Capital Territory",
+                font:{
+                    size:10
+                },
+                xaxis:{
+                    title: "Year",
+                    showgrid: false,
+                    zeroline: false
+                },
+                yaxis:{
+                    title: "Population",
+                    // showgrid: false,
+                    // zeroline: false,
+                    // tickformat: "int",
+                    // dtick:100000
+                }
+            };
+
+            Plotly.newPlot(board, plot_data, plot_layout);
         }
 
         window.onload = function () {
-            plot();
+            let year = document.getElementById('drag');
+            query(year.min.toString(), year.value.toString(), function (data) {
+                plot(data)
+            });
         }
 
     </script>
