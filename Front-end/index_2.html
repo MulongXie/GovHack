@@ -14,6 +14,7 @@
             height: 100%;
         }
 
+
         /* Optional: Makes the sample page fill the window. */
         html,
         body {
@@ -27,238 +28,288 @@
 
 <body>
 
-    <div class="nav">
-        <ul>
-            <li><a href="http://www.4399.com"><span>Population</span></a></li>
-            <li><a href="http://www.4399.com"><span>Employment</span></a></li>
-            <li><a href="http://www.4399.com"><span>Resource</span></a></li>
-            <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
-        </ul>
-    </div>
+<div class="nav">
+    <ul>
+        <li><a href="http://www.4399.com"><span>Population</span></a></li>
+        <li><a href="http://www.4399.com"><span>Employment</span></a></li>
+        <li><a href="http://www.4399.com"><span>Resource</span></a></li>
+        <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
+    </ul>
+</div>
 
-    <div class="content">
-        <div class="con_left">
-            <div id="plot">
-            </div>
-            <div class="drag_bar">
-                <div class="year">
-                    <p id="current">2000</p>
-                    <input id="drag" style="width: 100%;" type="range" min="2000" max="2050" value="0"
-                        oninput="change()">
-                    <p id="start">2000</p>
-                    <p id="end">2050</p>
-                </div>
+<div class="content">
+    <div class="con_left">
+        <div id="plot">
+        </div>
+        <div class="drag_bar">
+            <div class="year">
+                <p id="current">2000</p>
+                <input id="drag" style="width: 100%;" type="range" min="2000" max="2050" value="0"
+                       oninput="change()">
+                <p id="start">2000</p>
+                <p id="end">2050</p>
             </div>
         </div>
-
-
-        <div class="con_right">
-            <div id="map"></div>
-        </div>
-
-        <button onclick="markerList()">test</button>
-
     </div>
 
-    <script>
-        var cdlist = {
-            'Aranda': [-35.258333, 149.08],
-            'Belconnen': [-35.2218989, 149.0353134],
-            'Hume': [-35.387, 149.17],
-            'Lawson': [-35.225, 149.088056],
-            'Bruce': [-35.242, 149.077],
-            'Charnwood': [-35.2, 149.037],
-            'Cook': [-35.259722, 149.063889],
-            'Kowen': [-35.3126627, 149.3171038],
-            'Dunlop': [-35.195556, 149.02],
-            'Molonglo': [-35.299828, 149.040199],
-            'Evatt': [-35.211667, 149.067778],
-            'Florey': [-35.225833, 149.049444],
-            'Flynn': [-35.2025, 149.050278],
-            'Fraser': [-35.1925, 149.050556],
-            'Giralang': [-35.211944, 149.097222],
-            'Acton': [-35.279444, 149.119444],
-            'Gooromon': [-35.170273, 149.015201],
-            'Hawker': [-35.244, 149.038],
-            'Higgins': [-35.232222, 149.027222],
-            'Majura': [-35.2736652, 149.2190324],
-            'Holt': [-35.22416700000001, 149.015278],
-            'Kaleen': [-35.221, 149.106],
-            'Latham': [-35.217222, 149.031389],
-            'Macgregor': [-35.210833, 149.015278],
-            'Macquarie': [-35.250833, 149.064722],
-            'McKellar': [-35.2175, 149.076111],
-            'Melba': [-35.208333, 149.054167],
-            'Hall': [-35.1679431, 149.0616656],
-            'Page': [-35.4734679, 149.0123679],
-            'Scullin': [-35.234722, 149.038333],
-            'Spence': [-35.198889, 149.065278],
-            'Weetangera': [-35.25, 149.049],
-            'ACTSouthWest': [-35.4734679, 149.0123679],
-            'Namadgi': [-35.6322068, 148.8747865],
-            'ACTEast': [-35.4734679, 149.0123679],
-            'Mitchell': [-35.215278, 149.140833],
-            'Amaroo': [-35.171389, 149.128889],
-            'Bonner': [-35.16413, 149.13322],
-            'Casey': [-35.1747, 149.0959],
-            'Crace': [-35.2048561, 149.1070459],
-            'Forde': [-35.166389, 149.143056],
-            'Franklin': [-35.2, 149.1425],
-            'GungahlinTC': [-35.4734679, 149.0123679],
-            'GungahlinEast': [-35.4734679, 149.0123679],
-            'GungahlinWest': [-35.4734679, 149.0123679],
-            'Harrison': [-35.1975, 149.154444],
-            'Ngunnawal': [-35.175833, 149.109167],
-            'Nicholls': [-35.186, 149.092],
-            'Palmerston': [-35.19457, 149.114],
-            'LakeBurleyGriffin': [-35.2951212, 149.1142215],
-            'Ainslie': [-35.262778, 149.144167],
-            'Braddon': [-35.271944, 149.135556],
-            'Campbell': [-35.288056, 149.153889],
-            'Civic': [-35.4734679, 149.0123679],
-            'Dickson': [-35.2525, 149.139722],
-            'Downer': [-35.244167, 149.145],
-            'Hackett': [-35.248056, 149.162778],
-            'Parkes': [-35.3, 149.133333],
-            'Lyneham': [-35.25, 149.129167],
-            "O'Connor": [-35.259167, 149.121111],
-            'Reid': [-35.283333, 149.141667],
-            'Turner': [-35.268611, 149.124167],
-            'Watson': [-35.238333, 149.153333],
-            'Deakin': [-35.316, 149.107],
-            'Forrest': [-35.318056, 149.125],
-            'Griffith': [-35.32472200000001, 149.137222],
-            'Kingston-Barton': [-35.307778, 149.134444],
-            'Narrabundah': [-35.3325, 149.153333],
-            'RedHill': [-35.33397290000001, 149.124268],
-            'Yarralumla': [-35.305092, 149.098098],
-            'Banks': [-35.4734679, 149.0123679],
-            'Bonython': [-35.431, 149.082],
-            'Calwell': [-35.438, 149.11],
-            'Chisholm': [-35.424167, 149.1225],
-            'Conder': [-35.458, 149.097],
-            'Fadden': [-35.402, 149.118],
-            'Gilmore': [-35.421, 149.133],
-            'Gordon': [-35.451, 149.085],
-            'Gowrie': [-35.412, 149.11],
-            'Greenway': [-35.41800000000001, 149.07],
-            'IsabellaPlains': [-35.428, 149.095],
-            'Kambah': [-35.394444, 149.068611],
-            'Macarthur': [-35.405833, 149.13],
-            'Monash': [-35.417, 149.1],
-            'MountTaylor': [-35.4734679, 149.0123679],
-            'Oxley': [-35.40600000000001, 149.08],
-            'Richardson': [-35.4300126, 149.1127863],
-            'Theodore': [-35.446, 149.122],
-            'Tuggeranong': [-35.4244, 149.0888],
-            'Wanniassa': [-35.403056, 149.097222],
-            'Chapman': [-35.35700000000001, 149.04],
-            'Duffy': [-35.337, 149.035],
-            'Fisher': [-35.361, 149.057],
-            'Holder': [-35.336, 149.045],
-            'Rivett': [-35.348, 149.038],
-            'Stirling': [-35.349, 149.05],
-            'Waramanga': [-35.353, 149.063],
-            'Weston': [-35.338, 149.059],
-            'Chifley': [-35.351111, 149.077778],
-            'Curtin': [-35.325, 149.077778],
-            'Farrer': [-35.377222, 149.105278],
-            'Garran': [-35.342, 149.108],
-            'Hughes': [-35.333, 149.094],
-            'Isaacs': [-35.3675, 149.111389],
-            'Lyons': [-35.342, 149.076],
-            'Mawson': [-35.3653069, 149.0947898],
-            "O'Malley": [-35.3525, 149.108611],
-            'Pearce': [-35.362, 149.085],
-            'Phillip': [-35.349444, 149.090278],
-            'Torrens': [-35.372778, 149.087222]
+
+    <div class="con_right">
+        <div id="map"></div>
+        <div id="capture"></div>
+    </div>
+
+    <button onclick="markerList()">test</button>
+
+</div>
+
+<script>
+    var cdlist = {
+        'Aranda': [-35.258333, 149.08],
+        'Belconnen': [-35.2218989, 149.0353134],
+        'Hume': [-35.387, 149.17],
+        'Lawson': [-35.225, 149.088056],
+        'Bruce': [-35.242, 149.077],
+        'Charnwood': [-35.2, 149.037],
+        'Cook': [-35.259722, 149.063889],
+        'Kowen': [-35.3126627, 149.3171038],
+        'Dunlop': [-35.195556, 149.02],
+        'Molonglo': [-35.299828, 149.040199],
+        'Evatt': [-35.211667, 149.067778],
+        'Florey': [-35.225833, 149.049444],
+        'Flynn': [-35.2025, 149.050278],
+        'Fraser': [-35.1925, 149.050556],
+        'Giralang': [-35.211944, 149.097222],
+        'Acton': [-35.279444, 149.119444],
+        'Gooromon': [-35.170273, 149.015201],
+        'Hawker': [-35.244, 149.038],
+        'Higgins': [-35.232222, 149.027222],
+        'Majura': [-35.2736652, 149.2190324],
+        'Holt': [-35.22416700000001, 149.015278],
+        'Kaleen': [-35.221, 149.106],
+        'Latham': [-35.217222, 149.031389],
+        'Macgregor': [-35.210833, 149.015278],
+        'Macquarie': [-35.250833, 149.064722],
+        'McKellar': [-35.2175, 149.076111],
+        'Melba': [-35.208333, 149.054167],
+        'Hall': [-35.1679431, 149.0616656],
+        'Page': [-35.4734679, 149.0123679],
+        'Scullin': [-35.234722, 149.038333],
+        'Spence': [-35.198889, 149.065278],
+        'Weetangera': [-35.25, 149.049],
+        'ACTSouthWest': [-35.4734679, 149.0123679],
+        'Namadgi': [-35.6322068, 148.8747865],
+        'ACTEast': [-35.4734679, 149.0123679],
+        'Mitchell': [-35.215278, 149.140833],
+        'Amaroo': [-35.171389, 149.128889],
+        'Bonner': [-35.16413, 149.13322],
+        'Casey': [-35.1747, 149.0959],
+        'Crace': [-35.2048561, 149.1070459],
+        'Forde': [-35.166389, 149.143056],
+        'Franklin': [-35.2, 149.1425],
+        'GungahlinTC': [-35.4734679, 149.0123679],
+        'GungahlinEast': [-35.4734679, 149.0123679],
+        'GungahlinWest': [-35.4734679, 149.0123679],
+        'Harrison': [-35.1975, 149.154444],
+        'Ngunnawal': [-35.175833, 149.109167],
+        'Nicholls': [-35.186, 149.092],
+        'Palmerston': [-35.19457, 149.114],
+        'LakeBurleyGriffin': [-35.2951212, 149.1142215],
+        'Ainslie': [-35.262778, 149.144167],
+        'Braddon': [-35.271944, 149.135556],
+        'Campbell': [-35.288056, 149.153889],
+        'Civic': [-35.4734679, 149.0123679],
+        'Dickson': [-35.2525, 149.139722],
+        'Downer': [-35.244167, 149.145],
+        'Hackett': [-35.248056, 149.162778],
+        'Parkes': [-35.3, 149.133333],
+        'Lyneham': [-35.25, 149.129167],
+        "O'Connor": [-35.259167, 149.121111],
+        'Reid': [-35.283333, 149.141667],
+        'Turner': [-35.268611, 149.124167],
+        'Watson': [-35.238333, 149.153333],
+        'Deakin': [-35.316, 149.107],
+        'Forrest': [-35.318056, 149.125],
+        'Griffith': [-35.32472200000001, 149.137222],
+        'Kingston-Barton': [-35.307778, 149.134444],
+        'Narrabundah': [-35.3325, 149.153333],
+        'RedHill': [-35.33397290000001, 149.124268],
+        'Yarralumla': [-35.305092, 149.098098],
+        'Banks': [-35.4734679, 149.0123679],
+        'Bonython': [-35.431, 149.082],
+        'Calwell': [-35.438, 149.11],
+        'Chisholm': [-35.424167, 149.1225],
+        'Conder': [-35.458, 149.097],
+        'Fadden': [-35.402, 149.118],
+        'Gilmore': [-35.421, 149.133],
+        'Gordon': [-35.451, 149.085],
+        'Gowrie': [-35.412, 149.11],
+        'Greenway': [-35.41800000000001, 149.07],
+        'IsabellaPlains': [-35.428, 149.095],
+        'Kambah': [-35.394444, 149.068611],
+        'Macarthur': [-35.405833, 149.13],
+        'Monash': [-35.417, 149.1],
+        'MountTaylor': [-35.4734679, 149.0123679],
+        'Oxley': [-35.40600000000001, 149.08],
+        'Richardson': [-35.4300126, 149.1127863],
+        'Theodore': [-35.446, 149.122],
+        'Tuggeranong': [-35.4244, 149.0888],
+        'Wanniassa': [-35.403056, 149.097222],
+        'Chapman': [-35.35700000000001, 149.04],
+        'Duffy': [-35.337, 149.035],
+        'Fisher': [-35.361, 149.057],
+        'Holder': [-35.336, 149.045],
+        'Rivett': [-35.348, 149.038],
+        'Stirling': [-35.349, 149.05],
+        'Waramanga': [-35.353, 149.063],
+        'Weston': [-35.338, 149.059],
+        'Chifley': [-35.351111, 149.077778],
+        'Curtin': [-35.325, 149.077778],
+        'Farrer': [-35.377222, 149.105278],
+        'Garran': [-35.342, 149.108],
+        'Hughes': [-35.333, 149.094],
+        'Isaacs': [-35.3675, 149.111389],
+        'Lyons': [-35.342, 149.076],
+        'Mawson': [-35.3653069, 149.0947898],
+        "O'Malley": [-35.3525, 149.108611],
+        'Pearce': [-35.362, 149.085],
+        'Phillip': [-35.349444, 149.090278],
+        'Torrens': [-35.372778, 149.087222]
+    }
+
+    var markers = [];
+
+    var globelMap;
+    function initMap() {
+        var canberra = { lat: -35.281, lng: 149.120 };
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 10,
+            center: canberra
+        });
+
+        globelMap = map;
+        // addMarker(cdlist["Torrens"],map,"60");
+        var kmlLayer = new google.maps.KmlLayer({
+            url: 'https://opendata.arcgis.com/datasets/565b5afe76914aeaa3463bd42714a4d6_1.kml?outSR=%7B%22wkid%22%3A28355%2C%22latestWkid%22%3A28355%7D',
+            suppressInfoWindows: true,
+            map: map
+        });
+    }
+
+    function addMarker(loc, map, data) {
+        // Add the marker at the clicked location, and add the next-available label
+        // from the array of alphabetical characters.
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(loc[0], loc[1]),
+            label: data,
+            map: map
+        });
+        markers.push(marker);
+    }
+
+    function markerList() {
+        clearMarkers();
+        for (var i in cdlist) {
+            var loc = cdlist[i];
+            addMarker(loc, globelMap, "60");
         }
+    }
 
-        var globelMap;
-        function initMap() {
-            var canberra = { lat: -35.281, lng: 149.120 };
-
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 10,
-                center: canberra
-            });
-
-            globelMap = map;
-            // addMarker(cdlist["Torrens"],map,"60");
-
+    function clearMarkers() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
         }
+    }
 
-        function addMarker(loc, map, data) {
-            // Add the marker at the clicked location, and add the next-available label
-            // from the array of alphabetical characters.
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(loc[0],loc[1]),
-                label: data,
-                map: map
-            });
-        }
-
-        function markerList(){
-
-            for(var i in cdlist)
-            {
-                var loc = cdlist[i];
-                addMarker(loc,globelMap,"60");
-            }
-        }
-
-        function clearMarkers() {
-            setMapOnAll(null);
-        }
-
-
-
-        function connect() {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", 'http://127.0.0.1:5000/population', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
+    function query(start, end, sendback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'http://127.0.0.1:5000/population', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
                 "Year": {
-                    "start": 2016,
-                    "end": 2016
+                    "start": start,
+                    "end": end
                 }
             }
-            ));
-            xhr.onload = function () {
-                console.log(this.responseText);
-                var data = JSON.parse(this.responseText);
-                console.log(data);
+        ));
+        xhr.onload = function() {
+            var data = this.responseText;
+            sendback(data)
+        };
+    }
+
+    function change() {
+        let year = document.getElementById('drag');
+        let now = document.getElementById('current');
+
+        query(year.min.toString(), year.value.toString(), function (data) {
+            plot(data)
+        });
+        now.innerHTML = year.value;
+    }
+
+    function plot(data) {
+        // console.log(data);
+        let board = document.getElementById('plot');
+
+        data = JSON.parse(data);
+        // console.log();
+
+        var population = {'year':[], 'population':[]};
+        for(let i=0; i < data.length; i++){
+
+            var existing = false;
+            for(let y=0; y < population.year.length; y++){
+                if(data[i].Year == population.year[y]){
+                    population.population[y] += data[i].Population;
+                    existing = true;
+                    break;
+                }
+            }
+
+            if(!existing){
+                population.year.push(data[i].Year);
+                population.population.push(0);
             }
         }
 
+        var plot_data = [{x: population.year, y: population.population}];
+        var plot_layout = {
+            width: 359,
+            height: 360,
+            title: "Population in Australian Capital Territory",
+            font:{
+                size:10
+            },
+            xaxis:{
+                title: "Year",
+                showgrid: false,
+                zeroline: false
+            },
+            yaxis:{
+                title: "Population",
+                // showgrid: false,
+                // zeroline: false,
+                // tickformat: "int",
+                // dtick:100000
+            }
+        };
 
-        function change() {
-            let year = document.getElementById('drag');
-            let now = document.getElementById('current');
+        Plotly.newPlot(board, plot_data, plot_layout);
+    }
 
-            now.innerHTML = year.value;
-            now.style.left = '160px;';
-        }
+    window.onload = function () {
+        let year = document.getElementById('drag');
+        query(year.min.toString(), year.value.toString(), function (data) {
+            plot(data)
+        });
+    };
 
-        function plot() {
-            let board = document.getElementById('plot');
-            Plotly.plot(board,
-                [{
-                    x: [1, 2, 3, 4, 5],
-                    y: [1, 2, 4, 8, 16]
-                }],
-                { margin: { t: 0 } });
-        }
+</script>
 
-        window.onload = function () {
-            plot();
-        }
-
-    </script>
-
-    <script async defer
+<script async defer
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0Ca6yajDtOxs77KvF8_111e3lVrp-cs&callback=initMap">
-        </script>
+</script>
 </body>
 
 </html>

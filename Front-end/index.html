@@ -5,127 +5,126 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="index.css">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="map.js"></script>
 </head>
 <body>
 
-    <div class="nav">
-        <ul>
-            <li><a href="http://www.4399.com"><span>Population</span></a></li>
-            <li><a href="http://www.4399.com"><span>Employment</span></a></li>
-            <li><a href="http://www.4399.com"><span>Resource</span></a></li>
-            <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
-        </ul>
-    </div>
+<div class="nav">
+    <ul>
+        <li><a href="http://www.4399.com"><span>Population</span></a></li>
+        <li><a href="http://www.4399.com"><span>Employment</span></a></li>
+        <li><a href="http://www.4399.com"><span>Resource</span></a></li>
+        <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
+    </ul>
+</div>
 
-    <div class="content">
-        <div class="con_left">
-            <div id="plot" >
-            </div>
-            <div class="drag_bar">
-                <div class="year">
-                    <p id="current">2015</p>
-                    <input id="drag" style="width: 100%;" type="range" min="2015" max="2020" value="2015" oninput="change()">
-                    <p id="start">2015</p>
-                    <p id="end">2020</p>
-                </div>
+<div class="content">
+    <div class="con_left">
+        <div id="plot" >
+        </div>
+        <div class="drag_bar">
+            <div class="year">
+                <p id="current">2015</p>
+                <input id="drag" style="width: 100%;" type="range" min="2015" max="2020" value="2015" oninput="change()">
+                <p id="start">2015</p>
+                <p id="end">2020</p>
             </div>
         </div>
-
-        <div class="con_right">
-            <div class="map">
-                <iframe id="g_map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d13029.082225015434!2d149.1069130697754!3d-35.27439890000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sau!4v1567827388741!5m2!1sen!2sau" frameborder="0" height="100%" width="100%" style="border:0;" allowfullscreen=""></iframe>
-            </div>
-        </div>
-
     </div>
 
-    <script>
+    <div class="con_right">
+        <div id="map"></div>
+    </div>
 
-        function query(start, end, sendback) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", 'http://127.0.0.1:5000/population', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({
-                    "Year": {
-                        "start": start,
-                        "end": end
-                    }
+</div>
+
+<script>
+    function query(start, end, sendback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'http://127.0.0.1:5000/population', true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+                "Year": {
+                    "start": start,
+                    "end": end
                 }
-            ));
-            xhr.onload = function() {
-                var data = this.responseText;
-                sendback(data)
-            };
-        }
+            }
+        ));
+        xhr.onload = function() {
+            var data = this.responseText;
+            sendback(data)
+        };
+    }
 
-        function change() {
-            let year = document.getElementById('drag');
-            let now = document.getElementById('current');
+    function change() {
+        let year = document.getElementById('drag');
+        let now = document.getElementById('current');
 
-            query(year.min.toString(), year.value.toString(), function (data) {
-                plot(data)
-            });
-            now.innerHTML = year.value;
-        }
+        query(year.min.toString(), year.value.toString(), function (data) {
+            plot(data)
+        });
+        now.innerHTML = year.value;
+    }
 
-        function plot(data) {
-            // console.log(data);
-            let board = document.getElementById('plot');
+    function plot(data) {
+        // console.log(data);
+        let board = document.getElementById('plot');
 
-            data = JSON.parse(data);
-            // console.log();
+        data = JSON.parse(data);
+        // console.log();
 
-            var population = {'year':[], 'population':[]};
-            for(let i=0; i < data.length; i++){
+        var population = {'year':[], 'population':[]};
+        for(let i=0; i < data.length; i++){
 
-                var existing = false;
-                for(let y=0; y < population.year.length; y++){
-                    if(data[i].Year == population.year[y]){
-                        population.population[y] += data[i].Population;
-                        existing = true;
-                        break;
-                    }
-                }
-
-                if(!existing){
-                    population.year.push(data[i].Year);
-                    population.population.push(0);
+            var existing = false;
+            for(let y=0; y < population.year.length; y++){
+                if(data[i].Year == population.year[y]){
+                    population.population[y] += data[i].Population;
+                    existing = true;
+                    break;
                 }
             }
 
-            var plot_data = [{x: population.year, y: population.population}];
-            var plot_layout = {
-                width: 359,
-                height: 360,
-                title: "Population in Australian Capital Territory",
-                font:{
-                    size:10
-                },
-                xaxis:{
-                    title: "Year",
-                    showgrid: false,
-                    zeroline: false
-                },
-                yaxis:{
-                    title: "Population",
-                    // showgrid: false,
-                    // zeroline: false,
-                    // tickformat: "int",
-                    // dtick:100000
-                }
-            };
-
-            Plotly.newPlot(board, plot_data, plot_layout);
+            if(!existing){
+                population.year.push(data[i].Year);
+                population.population.push(0);
+            }
         }
 
-        window.onload = function () {
-            let year = document.getElementById('drag');
-            query(year.min.toString(), year.value.toString(), function (data) {
-                plot(data)
-            });
-        }
+        var plot_data = [{x: population.year, y: population.population}];
+        var plot_layout = {
+            width: 359,
+            height: 360,
+            title: "Population in Australian Capital Territory",
+            font:{
+                size:10
+            },
+            xaxis:{
+                title: "Year",
+                showgrid: false,
+                zeroline: false
+            },
+            yaxis:{
+                title: "Population",
+                // showgrid: false,
+                // zeroline: false,
+                // tickformat: "int",
+                // dtick:100000
+            }
+        };
 
-    </script>
+        Plotly.newPlot(board, plot_data, plot_layout);
+    }
 
+    window.onload = function () {
+        let year = document.getElementById('drag');
+        query(year.min.toString(), year.value.toString(), function (data) {
+            plot(data)
+        });
+    };
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0Ca6yajDtOxs77KvF8_111e3lVrp-cs&callback=initMap"></script>
 </body>
 </html>
