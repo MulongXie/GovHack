@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="index.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 
     <div class="nav">
+        <ul>
+            <li><a href="http://www.4399.com"><span>Population</span></a></li>
+            <li><a href="http://www.4399.com"><span>Employment</span></a></li>
+            <li><a href="http://www.4399.com"><span>Resource</span></a></li>
+            <li><a href="http://www.4399.com"><span>Transportation</span></a></li>
+        </ul>
     </div>
 
     <div class="content">
         <div class="con_left">
-            <div class="plot">
+            <div id="plot" >
 
             </div>
             <div class="drag_bar">
@@ -41,6 +48,19 @@
             now.innerHTML = year.value;
             now.style.left = '160px;';
         }
+
+        function plot() {
+            let board = document.getElementById('plot');
+            Plotly.plot(board,
+                [{x: [1, 2, 3, 4, 5],
+                  y: [1, 2, 4, 8, 16] }],
+                {margin: { t: 0 } } );
+        }
+
+        window.onload = function () {
+            plot()
+        }
+
     </script>
 
 </body>
