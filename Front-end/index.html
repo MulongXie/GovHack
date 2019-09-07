@@ -20,7 +20,6 @@
     <div class="content">
         <div class="con_left">
             <div id="plot" >
-
             </div>
             <div class="drag_bar">
                 <div class="year">
@@ -41,10 +40,34 @@
     </div>
 
     <script>
+
+        function query(start, end, sendback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", 'http://127.0.0.1:5000/population', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify({
+                    "Year": {
+                        "start": start,
+                        "end": end
+                    }
+                }
+            ));
+
+            xhr.onload = function() {
+                var data = this.responseText;
+                sendback(data)
+            }
+
+        }
+
         function change() {
             let year = document.getElementById('drag');
             let now = document.getElementById('current');
 
+            
+            query(year.min.toString(), year.value.toString(), function (data) {
+                console.log(data)
+            });
             now.innerHTML = year.value;
             now.style.left = '160px;';
         }
@@ -58,7 +81,7 @@
         }
 
         window.onload = function () {
-            plot()
+            plot();
         }
 
     </script>

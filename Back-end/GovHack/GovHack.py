@@ -5,18 +5,17 @@ from flask_cors import CORS
 from queryData import *
 
 app = Flask(__name__)
-
-
+CORS(app)
 
 @app.route('/population',methods=['POST'])
 def population():
     # req_data = request.get_json(force=True)
     content = request.json
+
     year = content['Year']
     start = year['start']
     end = year['end']
-    result = search(start,end)
-    print(result)
+    result = search(int(start),int(end))
 
     return result
 
