@@ -61,21 +61,19 @@
         let now = document.getElementById('current');
 
         query(year.min.toString(), year.value.toString(), function (data) {
-            plot(data)
+            data = JSON.parse(data);
+            plot(data);
+            // drawMarkers(data);
+            drawCircle(data);
         });
         now.innerHTML = year.value;
     }
 
     function plot(data) {
-        // console.log(data);
         let board = document.getElementById('plot');
-
-        data = JSON.parse(data);
-        // console.log();
 
         var population = {'year':[], 'population':[]};
         for(let i=0; i < data.length; i++){
-
             var existing = false;
             for(let y=0; y < population.year.length; y++){
                 if(data[i].Year == population.year[y]){
@@ -105,11 +103,7 @@
                 zeroline: false
             },
             yaxis:{
-                title: "Population",
-                // showgrid: false,
-                // zeroline: false,
-                // tickformat: "int",
-                // dtick:100000
+                title: "Population"
             }
         };
 

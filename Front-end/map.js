@@ -112,6 +112,7 @@ var cdlist = {
 };
 
 var markers = [];
+var circles = [];
 
 var globelMap;
 function initMap() {
@@ -131,6 +132,7 @@ function initMap() {
 }
 
 function addMarker(loc, map, data) {
+    loc = cdlist[loc];
     var marker = new google.maps.Marker({
         position: new google.maps.LatLng(loc[0], loc[1]),
         label: data,
@@ -139,16 +141,78 @@ function addMarker(loc, map, data) {
     markers.push(marker);
 }
 
-function drawMarkers(data) {
-    clearMarkers();
-    for (var i in cdlist) {
-        var loc = cdlist[i];
-        addMarker(loc, globelMap, "60");
+function clear(flag) {
+    if(flag == 'marker'){
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+    }
+    else if(flag == 'circle'){
+        for (var i = 0; i < circles.length; i++) {
+            circles[i].setMap(null);
+        }
     }
 }
 
-function clearMarkers() {
-    for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(null);
+function drawMarkers(data) {
+    clear('marker');
+    var population = {'suburb':[], 'population':[]};
+    for(let i=0; i < data.length; i++){
+        var existing = false;
+        for(let j=0; j < population.suburb.length; j++){
+            if (data[i].Suburb == population.suburb[j]) {
+                population.population[j] += data[i].Population;
+                existing = true;
+                break;
+            }
+        }
+
+        if(!existing){
+            population.suburb.push(data[i].Suburb);
+            population.population.push(0);
+        }
+    }
+
+    for(var i=0; i < population.suburb.length; i++){
+        addMarker(population.suburb[i], globelMap, population.population[i].toString());
+    }
+}
+
+function addCircle(loc, map, population) {
+    loc = cdlist[loc];
+    var circle = new google.maps.Circle({
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        map: map,
+        center: {lat:Number(loc[0]), lng:Number(loc[1])},
+        radius: Number(population) / 15
+    });
+    circles.push(circle);
+}
+
+function drawCircle(data) {
+    clear('circle');
+    var population = {'suburb':[], 'population':[]};
+    for(let i=0; i < data.length; i++){
+        var existing = false;
+        for(let j=0; j < population.suburb.length; j++){
+            if (data[i].Suburb == population.suburb[j]) {
+                population.population[j] += data[i].Population;
+                existing = true;
+                break;
+            }
+        }
+
+        if(!existing){
+            population.suburb.push(data[i].Suburb);
+            population.population.push(0);
+        }
+    }
+
+    for(var i=0; i < population.suburb.length; i++){
+        addCircle(population.suburb[i], globelMap, population.population[i].toString());
     }
 }
