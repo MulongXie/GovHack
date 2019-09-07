@@ -12,14 +12,27 @@
 
 <div class="nav">
     <ul>
-        <li><a onclick="initCategorize('Population')"><span>Population</span></a></li>
-        <li><a onclick="initCategorize('Employment')"><span>Employment</span></a></li>
-        <li><a onclick="initCategorize('Resource')"><span>Resource</span></a></li>
-        <li><a onclick="initCategorize('Transportation')"><span>Transportation</span></a></li>
+        <li><a onclick="initCategorize('population')"><span>Population</span></a></li>
+        <li><a onclick="initCategorize('employment')"><span>Employment</span></a></li>
+        <li><a onclick="initCategorize('resource')"><span>Resource</span></a></li>
+        <li><a onclick="initCategorize('transportation')"><span>Transportation</span></a></li>
+        <li><a id="individual" onclick="initCategorize('individual')"><span>Individual Report</span></a></li>
     </ul>
 </div>
 
 <div class="content">
+    <div id="btn_subpage">
+        <div id="btn_pop" style="display: block;">
+            <ul>
+                <li><a href="http://www.4399.com"><span>Resident</span></a></li>
+                <li><a href="http://www.4399.com"><span>House</span></a></li>
+            </ul>
+        </div>
+        <div id="btn_trans" style="display: none;">
+            <a href="http://www.4399.com"><span>Bus Station</span></a>
+            <a href="http://www.4399.com"><span>Crash</span></a>
+        </div>
+    </div>
     <div class="con_left">
         <div class="title">
             <h3 id="graph_title">Population</h3>
@@ -47,9 +60,10 @@
 
     function initCategorize(title){
         let g_title = document.getElementById('graph_title');
+        let p_btn = document.getElementById('btn_subpage');
         let drag_bar = document.getElementById('drag');
 
-        if (title == 'Population'){
+        if (title == 'population'){
             g_title.innerText = 'Population';
             drag_bar.min = 2015;
             document.getElementById('start').innerText = '2015';
@@ -57,9 +71,12 @@
             document.getElementById('end').innerText = '2020';
             drag_bar.value = 2015;
             document.getElementById('current').innerText = '2015';
+
+            p_btn.
+
             flag = "population";
         }
-        else if (title == 'Transportation'){
+        else if (title == 'transportation'){
             g_title.innerText = 'Transportation';
             drag_bar.min = 2012;
             document.getElementById('start').innerText = '2012';
@@ -108,7 +125,7 @@
     }
 
     window.onload = function () {
-        initCategorize('Population');
+        initCategorize('population');
     };
 
 </script>
