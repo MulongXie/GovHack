@@ -77,7 +77,6 @@
 
             var population = {'year':[], 'population':[]};
             for(let i=0; i < data.length; i++){
-                console.log(data[i]);
 
                 var existing = false;
                 for(let y=0; y < population.year.length; y++){
@@ -94,11 +93,9 @@
                 }
             }
 
-            console.log(population);
-
             var plot_data = [{x: population.year, y: population.population}];
             var plot_layout = {
-                width: 360,
+                width: document.getElementsByClassName('con_left')[0].style.width,
                 height: 360,
                 title: "Population in Australian Capital Territory",
                 font:{
