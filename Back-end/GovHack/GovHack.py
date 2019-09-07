@@ -7,19 +7,27 @@ from queryData import *
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/population',methods=['POST'])
 def population():
     # req_data = request.get_json(force=True)
     content = request.json
-
     year = content['Year']
     start = year['start']
     end = year['end']
     result = search(int(start),int(end))
-    print(result)
 
     return result
 
+
+@app.route('/crash',methods=['POST'])
+def crash():
+    content = request.json
+    year = content['Year']
+    start = year['start']
+    end = year['end']
+    result = searchCrash(int(start), int(end))
+    return result
 
 if __name__ == '__main__':
     app.run()
