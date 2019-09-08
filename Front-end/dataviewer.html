@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="dataviewer.css">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="map.js"></script>
+    <script src="plot.js"></script>
+</head>
+<body>
+<div class="nav">
+    <ul>
+        <li><a onclick="initCategory('residency', 'population')"><span>Residency</span></a></li>
+        <li><a onclick="initCategory('employment')"><span>Employment</span></a></li>
+        <li><a onclick="initCategory('resource')"><span>Resource</span></a></li>
+        <li><a onclick="initCategory('transportation', 'crash')"><span>Transportation</span></a></li>
+    </ul>
+</div>
+
+<div class="content">
+    <div id="btn_subpage">
+        <div id="btn_res" style="display: block;">
+            <ul>
+                <li><a id="btn_pop" onclick="initCategory('residency', 'population')"><span>Population</span></a></li>
+                <li><a id="btn_house" onclick="initCategory('residency', 'housing')"><span>House</span></a></li>
+            </ul>
+        </div>
+
+        <div id="btn_trans" style="display: none;">
+            <ul>
+                <li><a id="btn_crash" onclick="initCategory('transport', 'crash')"><span>Crash</span></a></li>
+                <li><a id="btn_bus" onclick="initCategory('transport', 'bus')"><span>Bus Station</span></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="con_left">
+        <div class="title">
+            <h3 id="graph_title">Residency</h3>
+        </div>
+        <div id="plot">
+        </div>
+        <div class="drag_bar">
+            <div class="year">
+                <p id="current">2015</p>
+                <input id="drag" style="width: 100%;" type="range" min="2015" max="2020" value="2015" oninput="change()">
+                <p id="start">2015</p>
+                <p id="end">2020</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="con_right">
+        <div id="map"></div>
+    </div>
+</div>
+
+<script>
+    var type;
+
+    function initCategory (title, subpage){
+        let g_title = document.getElementById('graph_title');
+        let drag_bar = document.getElementById('drag');
+
+        type = subpage;
+
+        if (title == 'residency'){
+            document.getElementById('btn_res').style.display = 'block';
+            document.getElementById('btn_trans').style.display = 'none';
+            g_title.innerText = 'Residency';
+            }
+        else if (title == 'transportation'){
+            document.getElementById('btn_res').style.display = 'none';
+            document.getElementById('btn_trans').style.display = 'block';
+            g_title.innerText = 'Transportation';
+            }
+
+        switch (subpage){
+            case 'population':
+                drag_bar.min = 2015;
+                document.getElementById('start').innerText = '2015';
+                drag_bar.max = 2020;
+                document.getElementById('end').innerText = '2020';
+                drag_bar.value = 2015;
+                document.getElementById('current').innerText = '2015';
+                break;
+
+            case 'housing':
+                drag_bar.min = 2006;
+                document.getElementById('start').innerText = '2006';
+                drag_bar.max = 2016;
+                document.getElementById('end').innerText = '2016';
+                drag_bar.value = 2006;
+                document.getElementById('current').innerText = '2006';
+                break;
+
+            case 'crash':
+                drag_bar.min = 2012;
+                document.getElementById('start').innerText = '2012';
+                drag_bar.max = 2019;
+                document.getElementById('end').innerText = '2019';
+                drag_bar.value = 2012;
+                document.getElementById('current').innerText = '2012';
+                break;
+
+        }
+
+        query(drag_bar.min.toString(), drag_bar.value.toString(), function (data) {
+            data = JSON.parse(data);
+            plot(data, type);
+            map(data, type);
+        });
+    }
+
+    function query(start, end, sendback) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", 'http://127.0.0.1:5000/' + type, true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+                "Year": {
+                    "start": start,
+                    "end": end
+                }
+            }
+        ));
+        xhr.onload = function() {
+            var data = this.responseText;
+            sendback(data)
+        };
+    }
+
+    function change() {
+        let year = document.getElementById('drag');
+        let now = document.getElementById('current');
+
+        query(year.min.toString(), year.value.toString(), function (data) {
+            data = JSON.parse(data);
+            plot(data, type);
+            map(data, type);
+        });
+        now.innerHTML = year.value;
+    }
+
+    window.onload = function () {
+        initCategory('residency', 'population');
+    };
+
+</script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0Ca6yajDtOxs77KvF8_111e3lVrp-cs&libraries=visualization&callback=initMap"></script>
+</body>
+</html>

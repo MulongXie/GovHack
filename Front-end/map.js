@@ -203,7 +203,6 @@ function drawHeatmap(data) {
 }
 
 function drawMaker(data) {
-    clear();
     function addMarker(loc, map, d) {
         var marker = new google.maps.Marker({
             position: new google.maps.LatLng(loc[0], loc[1]),
@@ -213,6 +212,7 @@ function drawMaker(data) {
         markers.push(marker);
     }
 
+    clear();
     for(let i=0; i < data.length; i++){
         addMarker(data[i].GPS, globelMap, data[i].House.toString());
     }
@@ -226,6 +226,7 @@ function map(data, type) {
             break;
         case 'crash':
             drawHeatmap(data);
+            break;
         case 'housing':
             drawMaker(data);
     }

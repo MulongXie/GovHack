@@ -1,0 +1,163 @@
+body, html, ul{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, serif;
+}
+ul{
+    list-style: none;
+}
+
+.nav{
+    padding: 0;
+    width: 100%;
+    height: 50px;
+    margin-top: 0;
+    clear: both;
+    background: #336699;
+}
+.nav li{
+    display: inline;
+}
+.nav a{
+    width: 25%;
+    height: 35px;
+    padding-top: 15px;
+    float: left;
+    background: #336699;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+#individual{
+    background: lightslategray;
+}
+.nav a:hover, #individual:hover{
+    background-color: #003366;
+    transition: 0.6s;
+}
+
+.ad{
+    width: 100%;
+    height: 350px;
+    overflow: hidden;
+}
+.ad img{
+    width: 100%;
+    margin-top: -100px;
+}
+
+.content{
+    margin: 20px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+#btn_res{
+    float: left;
+}
+
+#btn_res a{
+    width: 70px; height: 30px;
+    text-decoration: none;
+    color: white;
+    background: #336699;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+    font-size: 70%;
+}
+
+#btn_res a:hover{
+    background: #003366;
+    transition: 0.6s;
+}
+
+#btn_trans{
+    float: left;
+}
+
+#btn_trans a{
+    width: 70px; height: 30px;
+    text-decoration: none;
+    color: white;
+    background: #336699;
+    line-height: 30px;
+    text-align: center;
+    display: block;
+    font-size: 70%;
+}
+
+#btn_trans a:hover{
+    background: #003366;
+    transition: 0.6s;
+}
+
+#active{
+    background: lightslategray;
+}
+
+.con_left{
+    width: 30%;
+    height: 480px;
+    margin-bottom: 30px;
+    border: lightslategray solid 2px;
+    float: left;
+}
+
+.title{
+    margin: 0;
+    width: 60%;
+    height: 25px;
+    background: #336699;
+}
+
+.con_left h3{
+    margin-top: auto;
+    text-align: center;
+    color: white;
+}
+
+.con_right{
+    width: 62%;
+    height: 480px;
+    border: lightslategray solid 2px;
+    border-left: none;
+    float: left;
+}
+#map{
+    width: 100%;
+    height: 100%;
+}
+
+#plot{
+    width: 100%;
+    height: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 0;
+}
+
+.drag_bar{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.year p{
+    margin: 0;
+}
+#start{
+    float: left;
+}
+#end{
+    display: inline-block;
+    float: right;
+    margin-right: 0;
+}
+
+.footer{
+    width: 100%;
+    height: 60px;
+    background: #336699;
+    clear: both;
+}
