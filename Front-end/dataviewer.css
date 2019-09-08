@@ -7,6 +7,17 @@ ul{
     list-style: none;
 }
 
+#home{
+    height: 100%;
+    width: 60px;
+    background: lightgray;
+    float: left;
+}
+#home p{
+    margin-left: 8px;
+    font-weight: bold;
+}
+
 .nav{
     padding: 0;
     width: 100%;
@@ -19,10 +30,10 @@ ul{
     display: inline;
 }
 .nav a{
-    width: 25%;
+    width: 22%;
     height: 35px;
     padding-top: 15px;
-    float: left;
+    float: right;
     background: #336699;
     text-decoration: none;
     text-align: center;

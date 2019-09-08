@@ -10,6 +10,7 @@
 </head>
 <body>
 <div class="nav">
+    <div id="home" onclick="home()"><p>Home</p></div>
     <ul>
         <li><a onclick="initCategory('residency', 'population')"><span>Residency</span></a></li>
         <li><a onclick="initCategory('employment')"><span>Employment</span></a></li>
@@ -138,6 +139,10 @@
             map(data, type);
         });
         now.innerHTML = year.value;
+    }
+
+    function home(){
+        window.location.href='index.html';
     }
 
     window.onload = function () {
