@@ -102,7 +102,6 @@
                 drag_bar.value = 2012;
                 document.getElementById('current').innerText = '2012';
                 break;
-
         }
 
         query(drag_bar.min.toString(), drag_bar.value.toString(), function (data) {
@@ -114,7 +113,7 @@
 
     function query(start, end, sendback) {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", 'http://172.96.241.18:5000/' + type, true);
+        xhr.open("POST", 'http://172.96.241.182:8000/' + type, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
                 "Year": {
