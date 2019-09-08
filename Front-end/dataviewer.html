@@ -114,7 +114,7 @@
 
     function query(start, end, sendback) {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", 'http://127.0.0.1:5000/' + type, true);
+        xhr.open("POST", 'http://172.96.241.18:5000/' + type, true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(JSON.stringify({
                 "Year": {

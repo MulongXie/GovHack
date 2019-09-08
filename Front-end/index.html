@@ -31,28 +31,44 @@
     <div class="con_left">
         <div>
             <p>Past Current and Future</p>
-            <img src="img/past.jpg">
+            <a onclick="jump('dataviewer')"><img src="img/past.jpg"></a>
         </div>
         <div>
             <p>Forum</p>
-            <img src="img/forum.jpg">
+            <a onclick="jump('forum')"><img src="img/forum.jpg"></a>
         </div>
 
     </div>
     <div class="con_right">
         <div>
             <p>Prediction Report</p>
-            <img src="img/report.jpg">
+            <a onclick="jump('report')"><img src="img/report.jpg"></a>
         </div>
         <div>
             <p>ABS Data Converter</p>
-            <img src="img/scripter.jpg">
+            <a><img src="img/scripter.jpg"></a>
         </div>
     </div>
 </div>
 
 <div class="footer">
 </div>
+
+<script>
+    function jump(dest) {
+        switch (dest){
+            case 'dataviewer':
+                window.location.href='dataviewer.html';
+                break;
+            case 'report':
+                window.location.href='report.html';
+                break;
+            case 'forum':
+                window.location.href='forum.html';
+                break;
+        }
+    }
+</script>
 
 </body>
 </html>
