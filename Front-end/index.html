@@ -34,8 +34,8 @@
 
         <div id="btn_trans" style="display: none;">
             <ul>
-                <li><a id="btn_bus" onclick="initCategory('transport', 'bus')"><span>Bus Station</span></a></li>
                 <li><a id="btn_crash" onclick="initCategory('transport', 'crash')"><span>Crash</span></a></li>
+                <li><a id="btn_bus" onclick="initCategory('transport', 'bus')"><span>Bus Station</span></a></li>
             </ul>
         </div>
     </div>
@@ -100,7 +100,7 @@
         query(drag_bar.min.toString(), drag_bar.value.toString(), function (data) {
             data = JSON.parse(data);
             plot(data, type);
-            // drawCircle(data, type);
+            map(data, type);
         });
     }
 
@@ -128,7 +128,7 @@
         query(year.min.toString(), year.value.toString(), function (data) {
             data = JSON.parse(data);
             plot(data, type);
-            drawCircle(data, type);
+            map(data, type);
         });
         now.innerHTML = year.value;
     }
@@ -139,6 +139,6 @@
 
 </script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0Ca6yajDtOxs77KvF8_111e3lVrp-cs&callback=initMap"></script>
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAN0Ca6yajDtOxs77KvF8_111e3lVrp-cs&libraries=visualization&callback=initMap"></script>
 </body>
 </html>

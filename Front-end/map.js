@@ -111,10 +111,11 @@ var cdlist = {
     'Torrens': [-35.372778, 149.087222]
 };
 
-var markers = [];
+var heatpoints = [];
+var heatmap = [];
 var circles = [];
-
 var globelMap;
+
 function initMap() {
     var canberra = { lat: -35.281, lng: 149.120 };
 
@@ -131,54 +132,16 @@ function initMap() {
     });
 }
 
-function addMarker(loc, map, data) {
-    loc = cdlist[loc];
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(loc[0], loc[1]),
-        label: data,
-        map: map
-    });
-    markers.push(marker);
+function clear() {
+    for (var i = 0; i < circles.length; i++) {
+        circles[i].setMap(null);
+    }
+    circles = [];
+
+    heatpoints = [];
 }
 
-function clear(flag) {
-    if(flag == 'marker'){
-        for (var i = 0; i < markers.length; i++) {
-            markers[i].setMap(null);
-        }
-    }
-    else if(flag == 'circle'){
-        for (var i = 0; i < circles.length; i++) {
-            circles[i].setMap(null);
-        }
-    }
-}
-
-function drawMarkers(data) {
-    clear('marker');
-    var population = {'suburb':[], 'population':[]};
-    for(let i=0; i < data.length; i++){
-        var existing = false;
-        for(let j=0; j < population.suburb.length; j++){
-            if (data[i].Suburb == population.suburb[j]) {
-                population.population[j] += data[i].Population;
-                existing = true;
-                break;
-            }
-        }
-
-        if(!existing){
-            population.suburb.push(data[i].Suburb);
-            population.population.push(0);
-        }
-    }
-
-    for(var i=0; i < population.suburb.length; i++){
-        addMarker(population.suburb[i], globelMap, population.population[i].toString());
-    }
-}
-
-function addCircle(loc, map, population) {
+function addCircle(loc, population) {
     loc = cdlist[loc];
     var circle = new google.maps.Circle({
         strokeColor: '#FF0000',
@@ -186,17 +149,17 @@ function addCircle(loc, map, population) {
         strokeWeight: 2,
         fillColor: '#FF0000',
         fillOpacity: 0.35,
-        map: map,
+        map: globelMap,
         center: {lat:Number(loc[0]), lng:Number(loc[1])},
         radius: Number(population) / 15
     });
     circles.push(circle);
 }
 
-function drawCircle(data, flag) {
-    clear('circle');
+function drawCircle(data, type) {
+    clear();
 
-    if (flag == 'population'){
+    if (type == 'population'){
         var population = {'suburb':[], 'population':[]};
         for(let i=0; i < data.length; i++){
             var existing = false;
@@ -215,10 +178,33 @@ function drawCircle(data, flag) {
         }
 
         for(var i=0; i < population.suburb.length; i++){
-            addCircle(population.suburb[i], globelMap, population.population[i].toString());
+            addCircle(population.suburb[i], population.population[i].toString());
         }
     }
+}
 
-    else if (flag == 'crash'){
+function drawHeatmap(data) {
+    clear();
+
+    for(let i=0; i < data.length; i++){
+        let point = new google.maps.LatLng(data[i].LATITUDE, data[i].LONGITUDE)
+        heatpoints.push(point)
     }
+
+    heatmap = new google.maps.visualization.HeatmapLayer({
+        data: heatpoints,
+        map: globelMap
+    });
+}
+
+function map(data, type) {
+
+    switch (type){
+        case 'population':
+            drawCircle(data, type);
+            break;
+        case  'crash':
+            drawHeatmap(data)
+    }
+
 }
