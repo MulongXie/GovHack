@@ -28,7 +28,7 @@
         <div id="btn_res" style="display: block;">
             <ul>
                 <li><a id="btn_pop" onclick="initCategory('residency', 'population')"><span>Population</span></a></li>
-                <li><a id="btn_house" onclick="initCategory('residency', 'house')"><span>House</span></a></li>
+                <li><a id="btn_house" onclick="initCategory('residency', 'housing')"><span>House</span></a></li>
             </ul>
         </div>
 
@@ -75,26 +75,42 @@
         if (title == 'residency'){
             document.getElementById('btn_res').style.display = 'block';
             document.getElementById('btn_trans').style.display = 'none';
-
             g_title.innerText = 'Residency';
-            drag_bar.min = 2015;
-            document.getElementById('start').innerText = '2015';
-            drag_bar.max = 2020;
-            document.getElementById('end').innerText = '2020';
-            drag_bar.value = 2015;
-            document.getElementById('current').innerText = '2015';
-        }
+            }
         else if (title == 'transportation'){
             document.getElementById('btn_res').style.display = 'none';
             document.getElementById('btn_trans').style.display = 'block';
-
             g_title.innerText = 'Transportation';
-            drag_bar.min = 2012;
-            document.getElementById('start').innerText = '2012';
-            drag_bar.max = 2019;
-            document.getElementById('end').innerText = '2019';
-            drag_bar.value = 2012;
-            document.getElementById('current').innerText = '2012';
+            }
+
+        switch (subpage){
+            case 'population':
+                drag_bar.min = 2015;
+                document.getElementById('start').innerText = '2015';
+                drag_bar.max = 2020;
+                document.getElementById('end').innerText = '2020';
+                drag_bar.value = 2015;
+                document.getElementById('current').innerText = '2015';
+                break;
+
+            case 'housing':
+                drag_bar.min = 2006;
+                document.getElementById('start').innerText = '2006';
+                drag_bar.max = 2016;
+                document.getElementById('end').innerText = '2016';
+                drag_bar.value = 2006;
+                document.getElementById('current').innerText = '2006';
+                break;
+
+            case 'crash':
+                drag_bar.min = 2012;
+                document.getElementById('start').innerText = '2012';
+                drag_bar.max = 2019;
+                document.getElementById('end').innerText = '2019';
+                drag_bar.value = 2012;
+                document.getElementById('current').innerText = '2012';
+                break;
+
         }
 
         query(drag_bar.min.toString(), drag_bar.value.toString(), function (data) {

@@ -82,11 +82,21 @@ function plot_crash(data) {
     Plotly.newPlot(board, plot_data, plot_layout);
 }
 
-function plot(data, flag) {
-    if (flag == 'population'){
-        plot_population(data)
+function plot_housing(data) {
+    console.log(data[0])
+}
+
+function plot(data, type) {
+    switch (type){
+        case 'population':
+            plot_population(data);
+            break;
+        case 'housing':
+            plot_housing(data);
+            break;
+        case 'crash':
+            plot_crash(data);
+            break;
     }
-    else if (flag == 'crash'){
-        plot_crash(data)
-    }
+
 }
