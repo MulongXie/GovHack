@@ -114,6 +114,7 @@ var cdlist = {
 var heatpoints = [];
 var heatmap = [];
 var circles = [];
+var markers = [];
 var globelMap;
 
 function initMap() {
@@ -133,53 +134,57 @@ function initMap() {
 }
 
 function clear() {
-    for (var i = 0; i < circles.length; i++) {
+    for (let i = 0; i < circles.length; i++) {
         circles[i].setMap(null);
     }
     circles = [];
 
     heatpoints = [];
-}
 
-function addCircle(loc, population) {
-    loc = cdlist[loc];
-    var circle = new google.maps.Circle({
-        strokeColor: '#FF0000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: '#FF0000',
-        fillOpacity: 0.35,
-        map: globelMap,
-        center: {lat:Number(loc[0]), lng:Number(loc[1])},
-        radius: Number(population) / 15
-    });
-    circles.push(circle);
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    markers = [];
 }
 
 function drawCircle(data, type) {
+    function addCircle(loc, population) {
+        loc = cdlist[loc];
+        var circle = new google.maps.Circle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: '#FF0000',
+            fillOpacity: 0.35,
+            map: globelMap,
+            center: {lat:Number(loc[0]), lng:Number(loc[1])},
+            radius: Number(population) / 15
+        });
+        circles.push(circle);
+    }
     clear();
 
-    if (type == 'population'){
-        var population = {'suburb':[], 'population':[]};
-        for(let i=0; i < data.length; i++){
-            var existing = false;
-            for(let j=0; j < population.suburb.length; j++){
-                if (data[i].Suburb == population.suburb[j]) {
-                    population.population[j] += data[i].Population;
-                    existing = true;
-                    break;
+    switch (type){
+        case 'population':
+            var population = {'suburb':[], 'population':[]};
+            for(let i=0; i < data.length; i++){
+                var existing = false;
+                for(let j=0; j < population.suburb.length; j++){
+                    if (data[i].Suburb == population.suburb[j]) {
+                        population.population[j] += data[i].Population;
+                        existing = true;
+                        break;
+                    }
+                }
+                if(!existing){
+                    population.suburb.push(data[i].Suburb);
+                    population.population.push(0);
                 }
             }
-
-            if(!existing){
-                population.suburb.push(data[i].Suburb);
-                population.population.push(0);
+            for(var i=0; i < population.suburb.length; i++){
+                addCircle(population.suburb[i], population.population[i].toString());
             }
-        }
-
-        for(var i=0; i < population.suburb.length; i++){
-            addCircle(population.suburb[i], population.population[i].toString());
-        }
+            break;
     }
 }
 
@@ -197,14 +202,32 @@ function drawHeatmap(data) {
     });
 }
 
+function drawMaker(data) {
+    clear();
+    function addMarker(loc, map, d) {
+        var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(loc[0], loc[1]),
+            label: d,
+            map: map
+        });
+        markers.push(marker);
+    }
+
+    for(let i=0; i < data.length; i++){
+        addMarker(data[i].GPS, globelMap, data[i].House.toString());
+    }
+}
+
 function map(data, type) {
 
     switch (type){
         case 'population':
             drawCircle(data, type);
             break;
-        case  'crash':
-            drawHeatmap(data)
+        case 'crash':
+            drawHeatmap(data);
+        case 'housing':
+            drawMaker(data);
     }
 
 }

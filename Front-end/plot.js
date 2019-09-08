@@ -83,7 +83,44 @@ function plot_crash(data) {
 }
 
 function plot_housing(data) {
-    console.log(data[0])
+    let board = document.getElementById('plot');
+
+    var house = {'year':[], 'house':[]};
+    for(let i=0; i < data.length; i++){
+        var existing = false;
+        for(let j=0; j < house.year.length; j++){
+            if(data[i].Year == house.year[j]){
+                house.house[j] += data[i].House;
+                existing = true;
+                break;
+            }
+        }
+
+        if(!existing){
+            house.year.push(data[i].Year);
+            house.house.push(0);
+        }
+    }
+
+    var plot_data = [{x: house.year, y: house.house}];
+    var plot_layout = {
+        width: 359,
+        height: 360,
+        title: "Housing in Australian Capital Territory",
+        font:{
+            size:10
+        },
+        xaxis:{
+            title: "Year",
+            showgrid: false,
+            zeroline: false
+        },
+        yaxis:{
+            title: "Housing"
+        }
+    };
+
+    Plotly.newPlot(board, plot_data, plot_layout);
 }
 
 function plot(data, type) {
