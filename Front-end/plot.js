@@ -40,7 +40,7 @@ function plot_population(data) {
 }
 
 function plot_crash(data) {
-    console.log(data);
+    // console.log(data);
 
     let board = document.getElementById('plot');
 
