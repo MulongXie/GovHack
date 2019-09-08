@@ -61,6 +61,8 @@ function plot_crash(data) {
         }
     }
 
+    console.log(crash);
+
     var plot_data = [{x: crash.year, y: crash.crash}];
     var plot_layout = {
         width: 359,

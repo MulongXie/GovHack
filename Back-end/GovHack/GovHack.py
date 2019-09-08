@@ -15,7 +15,7 @@ def population():
     year = content['Year']
     start = year['start']
     end = year['end']
-    result = search(int(start),int(end))
+    result = searchPop(int(start),int(end))
 
     return result
 
@@ -28,6 +28,23 @@ def crash():
     end = year['end']
     result = searchCrash(int(start), int(end))
     return result
+
+
+@app.route('/bus',methods=['POST'])
+def Bus():
+    result = searchBus()
+    return result
+
+
+@app.route('/housing',methods=['POST'])
+def Housing():
+    content = request.json
+    year = content['Year']
+    start = year['start']
+    end = year['end']
+    result = searchHousing((int)(start),(int)(end))
+    return result
+
 
 if __name__ == '__main__':
     app.run()

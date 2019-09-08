@@ -194,7 +194,6 @@ function addCircle(loc, map, population) {
 }
 
 function drawCircle(data, flag) {
-    console.log(data[0]);
     clear('circle');
 
     if (flag == 'population'){
